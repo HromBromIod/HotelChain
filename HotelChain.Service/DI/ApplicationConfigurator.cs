@@ -1,4 +1,6 @@
-﻿namespace HotelChain.Service.DI;
+﻿using HotelChain.Service.IoC;
+
+namespace HotelChain.Service.DI;
 
 public static class ApplicationConfigurator
 {
