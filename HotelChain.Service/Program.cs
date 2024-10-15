@@ -1,4 +1,4 @@
-using HotelChain.Service.IoC;
+using HotelChain.Service.DI;
 
 var builder = WebApplication.CreateBuilder(args);
 
