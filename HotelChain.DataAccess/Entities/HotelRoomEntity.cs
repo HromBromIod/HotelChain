@@ -3,10 +3,8 @@
 namespace HotelChain.DataAccess.Entities;
 
 [Table("HotelRooms")]
-public class HotelRoomEntity
+public class HotelRoomEntity : BaseEntity
 {
-    public int Id { get; set; } // PK
-    
     public int BedsCount { get; set; }
     public DateTime BookingStartDate { get; set; }
     public DateTime BookingEndDate { get; set; }

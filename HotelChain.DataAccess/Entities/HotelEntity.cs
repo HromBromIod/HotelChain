@@ -3,10 +3,8 @@
 namespace HotelChain.DataAccess.Entities;
 
 [Table("Hotels")]
-public class HotelEntity
+public class HotelEntity : BaseEntity
 {
-    public int Id { get; set; } // PK
-    
     public string Name { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }

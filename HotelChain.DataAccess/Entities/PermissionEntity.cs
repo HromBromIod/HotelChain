@@ -3,10 +3,8 @@
 namespace HotelChain.DataAccess.Entities;
 
 [Table("Permissions")]
-public class PermissionEntity
+public class PermissionEntity : BaseEntity
 {
-    public int Id { get; set; } // PK
-    
     public string Type { get; set; }
     
     public List<UserEntity> Users { get; set; }

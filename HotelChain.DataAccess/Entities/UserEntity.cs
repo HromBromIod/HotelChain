@@ -3,9 +3,8 @@
 namespace HotelChain.DataAccess.Entities;
 
 [Table("Users")]
-public class UserEntity
+public class UserEntity : BaseEntity
 {
-    public int Id { get; set; } // PK
     public string Login { get; set; }
     public string PasswordHash { get; set; }
     
