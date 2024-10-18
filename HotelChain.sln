@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelChain.Service", "HotelChain.Service\HotelChain.Service.csproj", "{ED613839-0EE7-436C-B581-E9A7A7FF5A09}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelChain.DataAccess", "HotelChain.DataAccess\HotelChain.DataAccess.csproj", "{C56536CC-83C5-4C67-A029-53304347B2EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{ED613839-0EE7-436C-B581-E9A7A7FF5A09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED613839-0EE7-436C-B581-E9A7A7FF5A09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED613839-0EE7-436C-B581-E9A7A7FF5A09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C56536CC-83C5-4C67-A029-53304347B2EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C56536CC-83C5-4C67-A029-53304347B2EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C56536CC-83C5-4C67-A029-53304347B2EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C56536CC-83C5-4C67-A029-53304347B2EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
