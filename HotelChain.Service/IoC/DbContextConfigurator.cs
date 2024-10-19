@@ -17,7 +17,7 @@ public class DbContextConfigurator
             ServiceLifetime.Scoped);
     }
 
-    public static void ConfigureApplication(IApplicationBuilder  app)
+    public static void ConfigureApplication(IApplicationBuilder app)
     {
         using var scope = app.ApplicationServices.CreateScope();
         var contextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<HotelChainDbContext>>();
