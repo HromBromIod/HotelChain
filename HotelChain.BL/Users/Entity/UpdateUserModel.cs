@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace HotelChain.BL.Users.Entity;
 
-namespace HotelChain.DataAccess.Entities;
-
-[Table("Users")]
-public class UserEntity : BaseEntity
+public class UpdateUserModel
 {
+    public int Id { get; set; }
+    public Guid ExternalId { get; set; }
+    
+    public DateTime CreationTime { get; set; }
+    public DateTime ModificationTime { get; set; }
+    
     public string Login { get; set; }
     public string PasswordHash { get; set; }
     
@@ -17,5 +20,4 @@ public class UserEntity : BaseEntity
     public DateTime BirthDate { get; set; }
     
     public int PermissionId { get; set; }
-    public PermissionEntity Permission { get; set; }
 }

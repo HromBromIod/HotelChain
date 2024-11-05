@@ -1,9 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace HotelChain.BL.Users.Entity;
 
-namespace HotelChain.DataAccess.Entities;
-
-[Table("Users")]
-public class UserEntity : BaseEntity
+public class CreateUserModel
 {
     public string Login { get; set; }
     public string PasswordHash { get; set; }
@@ -13,9 +10,10 @@ public class UserEntity : BaseEntity
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
     
-    public string FullName { get; set; }
+    public string Name { get; set; }
+    public string Surname { get; set; }
+    public string Patronymic { get; set; }
     public DateTime BirthDate { get; set; }
     
     public int PermissionId { get; set; }
-    public PermissionEntity Permission { get; set; }
 }

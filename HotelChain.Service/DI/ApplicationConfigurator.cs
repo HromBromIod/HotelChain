@@ -9,6 +9,7 @@ public static class ApplicationConfigurator
         SwaggerConfigurator.ConfigureServices(builder);
         SerilogConfigurator.ConfigureServices(builder);
         DbContextConfigurator.ConfigureServices(builder);
+        MapperConfigurator.ConfigureServices(builder);
     }
 
     public static void ConfigureApplication(WebApplication app)
