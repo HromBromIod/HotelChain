@@ -1,29 +1,30 @@
 ﻿using System.Linq.Expressions;
+using HotelChain.DataAccess;
 using HotelChain.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelChain.DataAccess.Repository;
+namespace HotelChain.Repository.Repository;
 
 public class Repository<T> : IRepository<T> where T : BaseEntity
 {
-    private readonly IDbContextFactory<DbContext> _contextFactory;
+    private readonly IDbContextFactory<HotelChainDbContext> _contextFactory;
     
-    public Repository(IDbContextFactory<DbContext> contextFactory)
+    public Repository(IDbContextFactory<HotelChainDbContext> contextFactory)
     {
         _contextFactory = contextFactory;
     }
 
 
-    public IQueryable<T> GetAll()
+    public IEnumerable<T> GetAll()
     {
         using var dbContext = _contextFactory.CreateDbContext();
-        return dbContext.Set<T>();
+        return dbContext.Set<T>().ToList();
     }
 
-    public IQueryable<T> GetAll(Expression<Func<T, bool>> predicate)
+    public IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate)
     {
         using var dbContext = _contextFactory.CreateDbContext();
-        return dbContext.Set<T>().Where(predicate);
+        return dbContext.Set<T>().Where(predicate).ToList();
     }
 
     public T? GetById(int id)

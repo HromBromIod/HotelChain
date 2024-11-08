@@ -2,7 +2,7 @@
 using HotelChain.BL.Users.Entity;
 using HotelChain.BL.Users.Exceptions;
 using HotelChain.DataAccess.Entities;
-using HotelChain.DataAccess.Repository;
+using HotelChain.Repository.Repository;
 
 namespace HotelChain.BL.Users.Provider;
 

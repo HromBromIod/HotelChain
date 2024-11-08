@@ -2,11 +2,10 @@
 
 namespace HotelChain.Service.IoC;
 
-public class MapperConfigurator
+public static class MapperConfigurator
 {
-    public static void ConfigureServices(WebApplicationBuilder builder)
+    public static void ConfigureServices(IServiceCollection services)
     {
-        var services = builder.Services;
         services.AddAutoMapper(config =>
         {
             config.AddProfile<UsersBLProfile>();

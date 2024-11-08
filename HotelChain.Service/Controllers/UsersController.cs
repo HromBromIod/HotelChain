@@ -2,9 +2,9 @@
 using HotelChain.BL.Users.Entity;
 using HotelChain.BL.Users.Manager;
 using HotelChain.BL.Users.Provider;
-using HotelChain.Service.Controllers.Entities;
 using HotelChain.Service.Controllers.Entities.UserEntities;
 using Microsoft.AspNetCore.Mvc;
+using ILogger = Serilog.ILogger;
 
 namespace HotelChain.Service.Controllers;
 
@@ -26,13 +26,13 @@ public class UsersController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost]
-    public IActionResult RegisterUser([FromBody] RegisterUserRequest request)
-    {
-        //var validateErrors = request.Validate();
-        
-        return Ok();
-    }
+    // [HttpPost]
+    // public IActionResult RegisterUser([FromBody] RegisterUserRequest request)
+    // {
+    //     //var validateErrors = request.Validate();
+    //
+    //     return Ok();
+    // }
 
     [HttpGet]
     public IActionResult GetAllUsers()
@@ -55,6 +55,4 @@ public class UsersController : ControllerBase
             Users = users.ToList()
         });
     }
-    
-    
 }
