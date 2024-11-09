@@ -1,6 +1,6 @@
 ﻿using HotelChain.BL.Users.Entity;
 
-namespace HotelChain.Service.Controllers.Entities.UserEntities;
+namespace HotelChain.Service.Controllers.Users.Entities;
 
 public class UsersListResponse
 {

@@ -17,7 +17,7 @@ public class UsersProvider : IUsersProvider
         _mapper = mapper;
     }
 
-    public IEnumerable<UserModel> GetUsers(UserFilterModel filter = null)
+    public IEnumerable<UserModel> GetUsers(FilterUserModel filter = null)
     {
         string? loginPart = filter?.LoginPart;
         string? namePart = filter?.NamePart;

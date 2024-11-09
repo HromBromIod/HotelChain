@@ -11,13 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Hotels\" />
-      <Folder Include="HotelRooms\" />
-      <Folder Include="Permissions\" />
-      <Folder Include="RoomTypes\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\HotelChain.DataAccess\HotelChain.DataAccess.csproj" />
       <ProjectReference Include="..\HotelChain.Repository\HotelChain.Repository.csproj" />
     </ItemGroup>

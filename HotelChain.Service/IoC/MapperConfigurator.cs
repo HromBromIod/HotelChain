@@ -1,4 +1,5 @@
 ﻿using HotelChain.BL.Mapper;
+using HotelChain.Service.Mapper;
 
 namespace HotelChain.Service.IoC;
 
@@ -9,6 +10,7 @@ public static class MapperConfigurator
         services.AddAutoMapper(config =>
         {
             config.AddProfile<UsersBLProfile>();
+            config.AddProfile<UsersServiceProfile>();
         });
     }
 }

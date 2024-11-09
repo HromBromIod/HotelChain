@@ -12,7 +12,7 @@ public static class ApplicationConfigurator
         SwaggerConfigurator.ConfigureServices(builder.Services);
         MapperConfigurator.ConfigureServices(builder.Services);
         ServicesConfigurator.ConfigureServices(builder.Services, settings);
-        
+
         builder.Services.AddControllers();
     }
 
@@ -22,7 +22,6 @@ public static class ApplicationConfigurator
         SwaggerConfigurator.ConfigureApplication(app);
         DbContextConfigurator.ConfigureApplication(app);
 
-        app.UseHttpsRedirection();
         app.MapControllers();
     }
 }

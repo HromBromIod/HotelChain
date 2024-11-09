@@ -28,9 +28,9 @@ public class UsersManager : IUsersManager
 
     public void DeleteUser(int id)
     {
-        var entity = _usersRepository.GetById(id);
         try
         {
+            var entity = _usersRepository.GetById(id);
             _usersRepository.Delete(entity);
         }
         catch (Exception e)
@@ -39,7 +39,7 @@ public class UsersManager : IUsersManager
         }
     }
 
-    public UserModel UpdateUserModel(UpdateUserModel updateModel)
+    public UserModel UpdateUser(UpdateUserModel updateModel)
     {
         //validation
         

@@ -4,6 +4,6 @@ namespace HotelChain.BL.Users.Provider;
 
 public interface IUsersProvider
 {
-    IEnumerable<UserModel> GetUsers(UserFilterModel filter = null);
+    IEnumerable<UserModel> GetUsers(FilterUserModel filter = null);
     UserModel GerUserInfo(int id);
 }

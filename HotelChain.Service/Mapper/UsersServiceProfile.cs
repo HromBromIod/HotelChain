@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using HotelChain.BL.Users.Entity;
-using HotelChain.Service.Controllers.Entities.UserEntities;
+using HotelChain.Service.Controllers.Users.Entities;
 
 namespace HotelChain.Service.Mapper;
 
@@ -8,7 +8,7 @@ public class UsersServiceProfile : Profile
 {
     public UsersServiceProfile()
     {
-        CreateMap<UserFilter, UserFilterModel>();
+        CreateMap<UserFilter, FilterUserModel>();
         CreateMap<RegisterUserRequest, CreateUserModel>();
     }
 }
