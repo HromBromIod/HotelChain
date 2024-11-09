@@ -57,6 +57,9 @@ namespace HotelChain.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ExternalId")
+                        .IsUnique();
+
                     b.ToTable("Hotels");
                 });
 
@@ -97,6 +100,9 @@ namespace HotelChain.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ExternalId")
+                        .IsUnique();
+
                     b.HasIndex("HotelId");
 
                     b.HasIndex("RoomTypeId");
@@ -127,6 +133,9 @@ namespace HotelChain.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ExternalId")
+                        .IsUnique();
+
                     b.ToTable("Permissions");
                 });
 
@@ -155,6 +164,9 @@ namespace HotelChain.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExternalId")
+                        .IsUnique();
 
                     b.ToTable("RoomTypes");
                 });
@@ -209,6 +221,9 @@ namespace HotelChain.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExternalId")
+                        .IsUnique();
 
                     b.HasIndex("PermissionId");
 
