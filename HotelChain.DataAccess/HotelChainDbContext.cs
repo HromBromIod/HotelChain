@@ -18,15 +18,19 @@ public class HotelChainDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>().HasKey(u => u.Id);
+        modelBuilder.Entity<UserEntity>().HasIndex(u => u.ExternalId).IsUnique();
         modelBuilder.Entity<UserEntity>().HasOne(u => u.Permission)
             .WithMany(p => p.Users)
             .HasForeignKey(u => u.PermissionId);
 
         modelBuilder.Entity<PermissionEntity>().HasKey(p => p.Id);
+        modelBuilder.Entity<PermissionEntity>().HasIndex(p => p.ExternalId).IsUnique();
 
         modelBuilder.Entity<HotelEntity>().HasKey(h => h.Id);
+        modelBuilder.Entity<HotelEntity>().HasIndex(h => h.ExternalId).IsUnique();
 
         modelBuilder.Entity<HotelRoomEntity>().HasKey(r => r.Id);
+        modelBuilder.Entity<HotelRoomEntity>().HasIndex(r => r.ExternalId).IsUnique();
         modelBuilder.Entity<HotelRoomEntity>().HasOne(r => r.RoomType)
             .WithMany(t => t.HotelRooms)
             .HasForeignKey(r => r.RoomTypeId);
@@ -35,5 +39,6 @@ public class HotelChainDbContext : DbContext
             .HasForeignKey(r => r.HotelId);
 
         modelBuilder.Entity<RoomTypeEntity>().HasKey(t => t.Id);
+        modelBuilder.Entity<RoomTypeEntity>().HasIndex(t => t.ExternalId).IsUnique();
     }
 }
