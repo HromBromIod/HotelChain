@@ -19,23 +19,22 @@ public class UsersProvider : IUsersProvider
 
     public IEnumerable<UserModel> GetUsers(FilterUserModel filter = null)
     {
-        string? loginPart = filter?.LoginPart;
-        string? namePart = filter?.NamePart;
-        string? phoneNumberPart = filter?.PhoneNumberPart;
-        string? emailPart = filter?.EmailPart;
+        string? loginPart = filter?.Login;
+        string? namePart = filter?.Name;
+        string? phoneNumberPart = filter?.PhoneNumber;
+        string? emailPart = filter?.Email;
         DateTime? creationTime = filter?.CreationTime;
         DateTime? modificationTime = filter?.ModificationTime;
         int? permission = filter?.Permission;
 
         var users = _userRepository.GetAll(u =>
-            (loginPart == null || u.Login == loginPart) &&
+            (loginPart == null || u.Login.Contains(loginPart)) &&
             (namePart == null || u.FullName.Contains(namePart)) &&
             (phoneNumberPart == null || u.PhoneNumber.Contains(phoneNumberPart)) &&
             (emailPart == null || u.Email.Contains(emailPart)) &&
             (creationTime == null || u.CreationTime == creationTime) &&
             (modificationTime == null || u.ModificationTime == modificationTime) &&
-            (permission == null || u.Permission.Id == permission)
-        );
+            (permission == null || u.Permission.Id == permission));
         return _mapper.Map<IEnumerable<UserModel>>(users);
     }
 

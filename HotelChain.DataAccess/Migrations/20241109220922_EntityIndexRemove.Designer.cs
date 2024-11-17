@@ -3,6 +3,7 @@ using System;
 using HotelChain.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HotelChain.DataAccess.Migrations
 {
     [DbContext(typeof(HotelChainDbContext))]
-    partial class HotelChainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241109220922_EntityIndexRemove")]
+    partial class EntityIndexRemove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,9 +44,6 @@ namespace HotelChain.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ExternalId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("ModificationTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -56,12 +56,6 @@ namespace HotelChain.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExternalId")
-                        .IsUnique();
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Hotels");
                 });
@@ -86,9 +80,6 @@ namespace HotelChain.DataAccess.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("ExternalId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("HotelId")
                         .HasColumnType("integer");
 
@@ -102,9 +93,6 @@ namespace HotelChain.DataAccess.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExternalId")
-                        .IsUnique();
 
                     b.HasIndex("HotelId");
 
@@ -124,9 +112,6 @@ namespace HotelChain.DataAccess.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("ExternalId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("ModificationTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -135,12 +120,6 @@ namespace HotelChain.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExternalId")
-                        .IsUnique();
-
-                    b.HasIndex("Type")
-                        .IsUnique();
 
                     b.ToTable("Permissions");
                 });
@@ -156,9 +135,6 @@ namespace HotelChain.DataAccess.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("ExternalId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("ModificationTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -170,12 +146,6 @@ namespace HotelChain.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExternalId")
-                        .IsUnique();
-
-                    b.HasIndex("Type")
-                        .IsUnique();
 
                     b.ToTable("RoomTypes");
                 });
@@ -197,9 +167,6 @@ namespace HotelChain.DataAccess.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid>("ExternalId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -231,22 +198,7 @@ namespace HotelChain.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("ExternalId")
-                        .IsUnique();
-
-                    b.HasIndex("Login")
-                        .IsUnique();
-
                     b.HasIndex("PermissionId");
-
-                    b.HasIndex("PhoneNumber")
-                        .IsUnique();
-
-                    b.HasIndex("PassportNumber", "PassportSeries")
-                        .IsUnique();
 
                     b.ToTable("Users");
                 });

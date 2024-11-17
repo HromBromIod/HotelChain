@@ -9,18 +9,38 @@ public class UsersBLProfile : Profile
     public UsersBLProfile()
     {
         CreateMap<UserEntity, UserModel>()
-            .ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
-            .ForMember(x => x.ExternalId, y => y.MapFrom(src => src.ExternalId));
-
+            .ForMember(x => x.Id, y => y.MapFrom(src => src.Id));
+        
         CreateMap<CreateUserModel, UserEntity>()
             .ForMember(x => x.Id, y => y.Ignore())
             .ForMember(x => x.ExternalId, y => y.Ignore())
             .ForMember(x => x.CreationTime, y => y.Ignore())
-            .ForMember(x => x.ModificationTime, y => y.Ignore());
-        
+            .ForMember(x => x.ModificationTime, y => y.Ignore())
+            .ForMember(x => x.FullName,
+                y => y.MapFrom(src =>
+                    src.Surname + " "+ src.Name + (src.Patronymic == null ? string.Empty : " " + src.Patronymic)));
+
         CreateMap<UpdateUserModel, UserEntity>()
-            .ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
-            .ForMember(x => x.ExternalId, y => y.MapFrom(src => src.ExternalId))
-            .ForMember(x => x.ModificationTime, y => y.Ignore());
+            .ForMember(x => x.Id, y => y.Ignore())
+            .ForMember(x => x.ExternalId, y => y.Ignore())
+            .ForMember(x => x.ModificationTime, y => y.Ignore())
+            .ForMember(x => x.Login, y =>
+                y.PreCondition(src => src.Login is not null))
+            .ForMember(x => x.PasswordHash, y =>
+                y.PreCondition(src => src.PasswordHash is not null))
+            .ForMember(x => x.PassportSeries, y =>
+                y.PreCondition(src => src.PassportSeries is not null))
+            .ForMember(x => x.PassportNumber, y =>
+                y.PreCondition(src => src.PassportNumber is not null))
+            .ForMember(x => x.PhoneNumber, y =>
+                y.PreCondition(src => src.PhoneNumber is not null))
+            .ForMember(x => x.Email, y =>
+                y.PreCondition(src => src.Email is not null))
+            .ForMember(x => x.FullName, y =>
+                y.PreCondition(src => src.FullName is not null))
+            .ForMember(x => x.BirthDate, y =>
+                y.PreCondition(src => src.BirthDate is not null));
+
+        CreateMap<CreateUserModel, FilterUserModel>();
     }
 }

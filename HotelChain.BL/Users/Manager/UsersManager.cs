@@ -19,32 +19,58 @@ public class UsersManager : IUsersManager
     
     public UserModel CreateUser(CreateUserModel createModel)
     {
-        //validation
-
         var entity = _mapper.Map<UserEntity>(createModel);
-        entity = _usersRepository.Save(entity);
-        return _mapper.Map<UserModel>(entity);
+        try
+        {
+            entity = _usersRepository.Save(entity);
+            return _mapper.Map<UserModel>(entity);
+        }
+        catch (Exception e)
+        {
+            throw new UserAlreadyExistsException("Пользователь с такими данными уже существует");
+        }
     }
 
     public void DeleteUser(int id)
     {
+        var entity = _usersRepository.GetById(id);
+        if (entity is null)
+            throw new UserNotFoundException("Такого пользователя не существует");
+        
+        _usersRepository.Delete(entity);
+    }
+
+    public UserModel UpdateUser(int id, UpdateUserModel updateModel)
+    {
+        var entity = _usersRepository.GetById(id);
+        if (entity is null)
+            throw new UserNotFoundException("Такого пользователя не существует");
+        
+        entity = _mapper.Map<UpdateUserModel, UserEntity>(updateModel, opts => opts.AfterMap(
+            (src, dest) =>
+            {
+                dest.Id = entity.Id;
+                dest.ExternalId = entity.ExternalId;
+                dest.CreationTime = entity.CreationTime;
+                dest.ModificationTime = entity.ModificationTime;
+                dest.Login = src.Login == null ? entity.Login : dest.Login;
+                dest.PasswordHash = src.PasswordHash == null ? entity.PasswordHash : dest.PasswordHash;
+                dest.PassportSeries = src.PassportSeries == null ? entity.PassportSeries : dest.PassportSeries;
+                dest.PassportNumber = src.PassportNumber == null ? entity.PassportNumber : dest.PassportNumber;
+                dest.PhoneNumber = src.PhoneNumber == null ? entity.PhoneNumber : dest.PhoneNumber;
+                dest.Email = src.Email == null ? entity.Email : dest.Email;
+                dest.FullName = src.FullName == null ? entity.FullName : dest.FullName;
+                dest.BirthDate = src.BirthDate == null ? entity.BirthDate : dest.BirthDate;
+                dest.PermissionId = entity.PermissionId;
+            }));
         try
         {
-            var entity = _usersRepository.GetById(id);
-            _usersRepository.Delete(entity);
+            entity = _usersRepository.Save(entity);
+            return _mapper.Map<UserModel>(entity);
         }
         catch (Exception e)
         {
-            throw new UserNotFoundException(e.Message);
+            throw new UserAlreadyExistsException("Пользователь с такими данными уже существует");
         }
-    }
-
-    public UserModel UpdateUser(UpdateUserModel updateModel)
-    {
-        //validation
-        
-        var entity = _mapper.Map<UserEntity>(updateModel);
-        entity = _usersRepository.Save(entity);
-        return _mapper.Map<UserModel>(entity);
     }
 }

@@ -3,6 +3,7 @@ using System;
 using HotelChain.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HotelChain.DataAccess.Migrations
 {
     [DbContext(typeof(HotelChainDbContext))]
-    partial class HotelChainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241111191017_HotelUniqueAttributesUpdateMigration")]
+    partial class HotelUniqueAttributesUpdateMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,9 +175,6 @@ namespace HotelChain.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ExternalId")
-                        .IsUnique();
-
-                    b.HasIndex("Type")
                         .IsUnique();
 
                     b.ToTable("RoomTypes");

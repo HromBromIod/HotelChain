@@ -2,10 +2,10 @@
 
 public class FilterUserModel
 {
-    public string? LoginPart { get; set; }
-    public string? NamePart { get; set; }
-    public string? PhoneNumberPart { get; set; }
-    public string? EmailPart { get; set; }
+    public string? Login { get; set; }
+    public string? Name { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? Email { get; set; }
     
     public DateTime? CreationTime { get; set; }
     public DateTime? ModificationTime { get; set; }

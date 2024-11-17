@@ -19,15 +19,21 @@ public class HotelChainDbContext : DbContext
     {
         modelBuilder.Entity<UserEntity>().HasKey(u => u.Id);
         modelBuilder.Entity<UserEntity>().HasIndex(u => u.ExternalId).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(u => u.Login).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(u => new { u.PassportNumber, u.PassportSeries }).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(u => u.PhoneNumber).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(u => u.Email).IsUnique();
         modelBuilder.Entity<UserEntity>().HasOne(u => u.Permission)
             .WithMany(p => p.Users)
             .HasForeignKey(u => u.PermissionId);
 
         modelBuilder.Entity<PermissionEntity>().HasKey(p => p.Id);
         modelBuilder.Entity<PermissionEntity>().HasIndex(p => p.ExternalId).IsUnique();
+        modelBuilder.Entity<PermissionEntity>().HasIndex(p => p.Type).IsUnique();
 
         modelBuilder.Entity<HotelEntity>().HasKey(h => h.Id);
         modelBuilder.Entity<HotelEntity>().HasIndex(h => h.ExternalId).IsUnique();
+        modelBuilder.Entity<HotelEntity>().HasIndex(h => h.Name).IsUnique();
 
         modelBuilder.Entity<HotelRoomEntity>().HasKey(r => r.Id);
         modelBuilder.Entity<HotelRoomEntity>().HasIndex(r => r.ExternalId).IsUnique();
@@ -40,5 +46,6 @@ public class HotelChainDbContext : DbContext
 
         modelBuilder.Entity<RoomTypeEntity>().HasKey(t => t.Id);
         modelBuilder.Entity<RoomTypeEntity>().HasIndex(t => t.ExternalId).IsUnique();
+        modelBuilder.Entity<RoomTypeEntity>().HasIndex(t => t.Type).IsUnique();
     }
 }

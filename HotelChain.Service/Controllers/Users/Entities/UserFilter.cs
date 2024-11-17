@@ -1,4 +1,4 @@
-﻿namespace HotelChain.Service.Controllers.Entities.UserEntities;
+﻿namespace HotelChain.Service.Controllers.Users.Entities;
 
 public class UserFilter
 {
@@ -9,9 +9,6 @@ public class UserFilter
     
     public DateTime? CreationTime { get; set; }
     public DateTime? ModificationTime { get; set; }
-    
-    public int? MinAge { get; set; }
-    public int? MaxAge { get; set; }
     
     public int? Permission { get; set; }
 }

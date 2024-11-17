@@ -8,12 +8,11 @@ namespace HotelChain.Repository.Repository;
 public class Repository<T> : IRepository<T> where T : BaseEntity
 {
     private readonly IDbContextFactory<HotelChainDbContext> _contextFactory;
-    
+
     public Repository(IDbContextFactory<HotelChainDbContext> contextFactory)
     {
         _contextFactory = contextFactory;
     }
-
 
     public IEnumerable<T> GetAll()
     {
@@ -42,7 +41,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     public T Save(T entity)
     {
         using var dbContext = _contextFactory.CreateDbContext();
-        if (dbContext.Set<T>().FirstOrDefault(e => e.Id == entity.Id) == null)
+        if (dbContext.Set<T>().AsNoTracking().FirstOrDefault(e => e.Id == entity.Id) == null)
         {
             entity.ExternalId = Guid.NewGuid();
             entity.CreationTime = DateTime.UtcNow;
