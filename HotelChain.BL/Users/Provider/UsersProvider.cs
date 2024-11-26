@@ -25,7 +25,7 @@ public class UsersProvider : IUsersProvider
         string? emailPart = filter?.Email;
         DateTime? creationTime = filter?.CreationTime;
         DateTime? modificationTime = filter?.ModificationTime;
-        List<int>? permission = filter?.Permissions;
+        List<string>? permissions = filter?.Permissions;
 
         var users = _userRepository.GetAll(u =>
             (loginPart == null || u.UserName.Contains(loginPart)) &&
@@ -34,7 +34,7 @@ public class UsersProvider : IUsersProvider
             (emailPart == null || u.Email.Contains(emailPart)) &&
             (creationTime == null || u.CreationTime == creationTime) &&
             (modificationTime == null || u.ModificationTime == modificationTime) &&
-            (permission == null || u.Permissions.Any(x => permission.Contains(x.Id))));
+            (permissions == null || permissions.Any(p => u.Permissions.Any(x => x.Type.Contains(p)))));
         return _mapper.Map<IEnumerable<UserModel>>(users);
     }
 
