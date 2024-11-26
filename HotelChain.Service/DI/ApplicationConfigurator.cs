@@ -11,7 +11,7 @@ public static class ApplicationConfigurator
         SerilogConfigurator.ConfigureServices(builder);
         SwaggerConfigurator.ConfigureServices(builder.Services);
         MapperConfigurator.ConfigureServices(builder.Services);
-        ServicesConfigurator.ConfigureServices(builder.Services, settings);
+        ServicesConfigurator.ConfigureServices(builder.Services);
 
         builder.Services.AddControllers();
     }

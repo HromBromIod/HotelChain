@@ -7,10 +7,10 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
 {
     public RegisterUserRequestValidator()
     {
-        RuleFor(x => x.Login)
+        RuleFor(x => x.UserName)
             .NotEmpty()
             .Matches(@"[\w_]+")
-            .WithMessage("Login is required");
+            .WithMessage("UserName is required");
         RuleFor(x => x.PasswordHash)
             .NotEmpty()
             .WithMessage("Password is required");
@@ -49,8 +49,5 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
         RuleFor(x => x.BirthDate)
             .Must(y => y == null || y < DateTime.UtcNow.AddYears(-18))
             .WithMessage("Birth date is required");
-        RuleFor(x => x.PermissionId)
-            .NotEmpty()
-            .WithMessage("Permission is required");
     }
 }

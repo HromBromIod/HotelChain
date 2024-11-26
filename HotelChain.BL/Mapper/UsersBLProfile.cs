@@ -9,8 +9,10 @@ public class UsersBLProfile : Profile
     public UsersBLProfile()
     {
         CreateMap<UserEntity, UserModel>()
-            .ForMember(x => x.Id, y => y.MapFrom(src => src.Id));
-        
+            .ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
+            .ForMember(x => x.Permissions, y => y.MapFrom(src =>
+                src.Permissions.Select(p => p.Type)));
+
         CreateMap<CreateUserModel, UserEntity>()
             .ForMember(x => x.Id, y => y.Ignore())
             .ForMember(x => x.ExternalId, y => y.Ignore())
@@ -18,14 +20,17 @@ public class UsersBLProfile : Profile
             .ForMember(x => x.ModificationTime, y => y.Ignore())
             .ForMember(x => x.FullName,
                 y => y.MapFrom(src =>
-                    src.Surname + " "+ src.Name + (src.Patronymic == null ? string.Empty : " " + src.Patronymic)));
+                    src.Surname + " " + src.Name + (src.Patronymic == null ? string.Empty : " " + src.Patronymic)))
+            .ForMember(x => x.Permissions, y => y.Ignore());
 
         CreateMap<UpdateUserModel, UserEntity>()
             .ForMember(x => x.Id, y => y.Ignore())
             .ForMember(x => x.ExternalId, y => y.Ignore())
             .ForMember(x => x.ModificationTime, y => y.Ignore())
-            .ForMember(x => x.Login, y =>
-                y.PreCondition(src => src.Login is not null))
+            .ForMember(x => x.UserName, y =>
+                y.PreCondition(src => src.UserName is not null))
+            .ForMember(x => x.UserName, y => y.MapFrom(src =>
+                src.UserName))
             .ForMember(x => x.PasswordHash, y =>
                 y.PreCondition(src => src.PasswordHash is not null))
             .ForMember(x => x.PassportSeries, y =>

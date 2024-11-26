@@ -1,11 +1,12 @@
 ﻿using System.Linq.Expressions;
 using HotelChain.DataAccess;
 using HotelChain.DataAccess.Entities;
+using HotelChain.Repository.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelChain.Repository.Repository;
+namespace HotelChain.Repository.Repositories;
 
-public class Repository<T> : IRepository<T> where T : BaseEntity
+public class Repository<T> : IRepository<T> where T : class, IBaseEntity
 {
     private readonly IDbContextFactory<HotelChainDbContext> _contextFactory;
 
@@ -17,25 +18,25 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     public IEnumerable<T> GetAll()
     {
         using var dbContext = _contextFactory.CreateDbContext();
-        return dbContext.Set<T>().ToList();
+        return dbContext.Set<T>().AsNoTracking().ToList();
     }
 
     public IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate)
     {
         using var dbContext = _contextFactory.CreateDbContext();
-        return dbContext.Set<T>().Where(predicate).ToList();
+        return dbContext.Set<T>().AsNoTracking().Where(predicate).ToList();
     }
 
     public T? GetById(int id)
     {
         using var dbContext = _contextFactory.CreateDbContext();
-        return dbContext.Set<T>().FirstOrDefault(e => e.Id == id);
+        return dbContext.Set<T>().AsNoTracking().FirstOrDefault(e => e.Id == id);
     }
 
     public T? GetById(Guid id)
     {
         using var dbContext = _contextFactory.CreateDbContext();
-        return dbContext.Set<T>().FirstOrDefault(e => e.ExternalId == id);
+        return dbContext.Set<T>().AsNoTracking().FirstOrDefault(e => e.ExternalId == id);
     }
 
     public T Save(T entity)

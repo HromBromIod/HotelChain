@@ -11,6 +11,9 @@ public static class MapperConfigurator
         {
             config.AddProfile<UsersBLProfile>();
             config.AddProfile<UsersServiceProfile>();
+            
+            config.AddProfile<PermissionsBLProfile>();
+            config.AddProfile<PermissionsServiceProfile>();
         });
     }
 }

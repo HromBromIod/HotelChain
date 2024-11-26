@@ -1,4 +1,5 @@
 ﻿using HotelChain.DataAccess.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelChain.DataAccess;
@@ -17,15 +18,22 @@ public class HotelChainDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //специальные таблицы для IdentityServer
+        modelBuilder.Entity<IdentityUserClaim<int>>().ToTable("user_claims");
+        modelBuilder.Entity<IdentityUserLogin<int>>().ToTable("user_logins").HasNoKey();
+        modelBuilder.Entity<IdentityUserToken<int>>().ToTable("user_tokens").HasNoKey();
+        modelBuilder.Entity<UserRoleEntity>().ToTable("user_roles");
+        modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("user_role_claims");
+        modelBuilder.Entity<IdentityUserRole<int>>().ToTable("user_role_owners").HasNoKey();
+        
         modelBuilder.Entity<UserEntity>().HasKey(u => u.Id);
         modelBuilder.Entity<UserEntity>().HasIndex(u => u.ExternalId).IsUnique();
-        modelBuilder.Entity<UserEntity>().HasIndex(u => u.Login).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(u => u.UserName).IsUnique();
         modelBuilder.Entity<UserEntity>().HasIndex(u => new { u.PassportNumber, u.PassportSeries }).IsUnique();
         modelBuilder.Entity<UserEntity>().HasIndex(u => u.PhoneNumber).IsUnique();
         modelBuilder.Entity<UserEntity>().HasIndex(u => u.Email).IsUnique();
-        modelBuilder.Entity<UserEntity>().HasOne(u => u.Permission)
-            .WithMany(p => p.Users)
-            .HasForeignKey(u => u.PermissionId);
+        modelBuilder.Entity<UserEntity>().HasMany(u => u.Permissions) 
+            .WithMany(p => p.Users);
 
         modelBuilder.Entity<PermissionEntity>().HasKey(p => p.Id);
         modelBuilder.Entity<PermissionEntity>().HasIndex(p => p.ExternalId).IsUnique();

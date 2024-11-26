@@ -2,6 +2,8 @@
 
 public class HotelChainSettings
 {
-    public Uri ServiceUri { get; set; }
     public string HotelChainDbContextConnectionString { get; set; }
+    public string IdentityServerUri { get; set; }
+    public string ClientId { get; set; }
+    public string ClientSecret { get; set; }
 }

@@ -25,16 +25,16 @@ public class UsersProvider : IUsersProvider
         string? emailPart = filter?.Email;
         DateTime? creationTime = filter?.CreationTime;
         DateTime? modificationTime = filter?.ModificationTime;
-        int? permission = filter?.Permission;
+        List<int>? permission = filter?.Permissions;
 
         var users = _userRepository.GetAll(u =>
-            (loginPart == null || u.Login.Contains(loginPart)) &&
+            (loginPart == null || u.UserName.Contains(loginPart)) &&
             (namePart == null || u.FullName.Contains(namePart)) &&
             (phoneNumberPart == null || u.PhoneNumber.Contains(phoneNumberPart)) &&
             (emailPart == null || u.Email.Contains(emailPart)) &&
             (creationTime == null || u.CreationTime == creationTime) &&
             (modificationTime == null || u.ModificationTime == modificationTime) &&
-            (permission == null || u.Permission.Id == permission));
+            (permission == null || u.Permissions.Any(x => permission.Contains(x.Id))));
         return _mapper.Map<IEnumerable<UserModel>>(users);
     }
 
@@ -42,10 +42,8 @@ public class UsersProvider : IUsersProvider
     {
         var entity = _userRepository.GetById(id);
         if (entity == null)
-        {
             throw new UserNotFoundException("User not found");
-        }
-
+        
         return _mapper.Map<UserModel>(entity);
     }
 }

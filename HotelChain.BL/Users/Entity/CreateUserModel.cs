@@ -2,7 +2,7 @@
 
 public class CreateUserModel
 {
-    public string Login { get; set; }
+    public string UserName { get; set; }
     public string PasswordHash { get; set; }
     
     public int PassportSeries { get; set; }
@@ -14,6 +14,4 @@ public class CreateUserModel
     public string Surname { get; set; }
     public string? Patronymic { get; set; }
     public DateTime BirthDate { get; set; }
-    
-    public int PermissionId { get; set; }
 }

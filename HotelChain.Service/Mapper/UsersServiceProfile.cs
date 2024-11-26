@@ -10,6 +10,7 @@ public class UsersServiceProfile : Profile
     {
         CreateMap<RegisterUserRequest, CreateUserModel>();
         CreateMap<UpdateUserRequest, UpdateUserModel>();
+        CreateMap<UpdateUsersPermissionsRequest, UpdateUsersPermissionsModel>();
         CreateMap<UserFilter, FilterUserModel>();
     }
 }

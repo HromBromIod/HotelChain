@@ -1,21 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace HotelChain.DataAccess.Entities;
 
 [Table("Users")]
-public class UserEntity : BaseEntity
+public class UserEntity : IdentityUser<int>, IBaseEntity
 {
-    public string Login { get; set; }
-    public string PasswordHash { get; set; }
-    
+    public Guid ExternalId { get; set; }
+    public DateTime CreationTime { get; set; }
+    public DateTime ModificationTime { get; set; }
     public int PassportSeries { get; set; }
     public int PassportNumber { get; set; }
-    public string PhoneNumber { get; set; }
-    public string Email { get; set; }
     
     public string FullName { get; set; }
     public DateTime BirthDate { get; set; }
     
-    public int PermissionId { get; set; }
-    public PermissionEntity Permission { get; set; }
+    public List<PermissionEntity> Permissions { get; set; }
 }
+
+public class UserRoleEntity : IdentityRole<int>
+{}

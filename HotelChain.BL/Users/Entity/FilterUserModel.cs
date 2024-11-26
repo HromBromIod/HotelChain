@@ -10,5 +10,5 @@ public class FilterUserModel
     public DateTime? CreationTime { get; set; }
     public DateTime? ModificationTime { get; set; }
     
-    public int? Permission { get; set; }
+    public List<int>? Permissions { get; set; }
 }

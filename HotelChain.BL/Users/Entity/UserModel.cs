@@ -7,7 +7,7 @@ public class UserModel
     public DateTime CreationTime { get; set; }
     public DateTime ModificationTime { get; set; }
     
-    public string Login { get; set; }
+    public string UserName { get; set; }
     public string PasswordHash { get; set; }
     
     public int PassportSeries { get; set; }
@@ -18,5 +18,5 @@ public class UserModel
     public string FullName { get; set; }
     public DateTime BirthDate { get; set; }
     
-    public int PermissionId { get; set; }
+    public List<string> Permissions { get; set; }
 }

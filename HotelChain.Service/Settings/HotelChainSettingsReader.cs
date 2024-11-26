@@ -6,8 +6,10 @@ public static class HotelChainSettingsReader
     {
         return new HotelChainSettings()
         {
-            ServiceUri = configuration.GetValue<Uri>("Uri"),
-            HotelChainDbContextConnectionString = configuration.GetValue<string>("HotelChainDbContext")
+            HotelChainDbContextConnectionString = configuration.GetValue<string>("HotelChainDbContext"),
+            IdentityServerUri = configuration.GetValue<string>("IdentityServer:Uri"),
+            ClientId = configuration.GetValue<string>("IdentityServer:ClientId"),
+            ClientSecret = configuration.GetValue<string>("IdentityServer:ClientSecret"),
         };
     }
 }
