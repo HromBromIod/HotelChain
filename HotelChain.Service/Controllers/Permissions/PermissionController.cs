@@ -9,26 +9,18 @@ namespace HotelChain.Service.Controllers.Permissions;
 
 [ApiController]
 [Route("[controller]")]
-public class PermissionController : ControllerBase
+public class PermissionController(
+    IPermissionsProvider permissionsProvider,
+    IMapper mapper,
+    ILogger logger)
+    : ControllerBase
 {
-    private readonly IPermissionsProvider _permissionsProvider;
-    private readonly IMapper _mapper;
-    private readonly ILogger _logger;
-
-    public PermissionController(IPermissionsProvider permissionsProvider,
-        IMapper mapper, ILogger logger)
-    {
-        _permissionsProvider = permissionsProvider;
-        _mapper = mapper;
-        _logger = logger;
-    }
-
     [HttpGet]
     public IActionResult GetAllPermissions()
     {
         try
         {
-            var permissions = _permissionsProvider.GetPermissions();
+            var permissions = permissionsProvider.GetPermissions();
             return Ok(new PermissionListResponse()
             {
                 Permissions = permissions.ToList()
@@ -36,7 +28,7 @@ public class PermissionController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.Error(e.ToString());
+            logger.Error(e.ToString());
             return BadRequest("Что-то пошло не так, повторите попытку позже");
         }
     }
@@ -47,8 +39,8 @@ public class PermissionController : ControllerBase
     {
         try
         {
-            var filterModel = _mapper.Map<FilterPermissionModel>(filter);
-            var permissions = _permissionsProvider.GetPermissions(filterModel);
+            var filterModel = mapper.Map<FilterPermissionModel>(filter);
+            var permissions = permissionsProvider.GetPermissions(filterModel);
             return Ok(new PermissionListResponse()
             {
                 Permissions = permissions.ToList()
@@ -56,7 +48,7 @@ public class PermissionController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.Error(e.ToString());
+            logger.Error(e.ToString());
             return BadRequest("Что-то пошло не так, повторите попытку позже");
         }
     }
