@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using HotelChain.BL.Exceptions.PermissionsExceptions;
+using HotelChain.BL.Exceptions.UsersExceptions;
 using HotelChain.BL.Permissions.Entity;
-using HotelChain.BL.Permissions.Exceptions;
 using HotelChain.BL.Permissions.Provider;
 using HotelChain.BL.Users.Entity;
-using HotelChain.BL.Users.Exceptions;
 using HotelChain.BL.Users.Manager;
 using HotelChain.BL.Users.Provider;
+using HotelChain.Service.Controllers.Auth.Entities;
 using HotelChain.Service.Controllers.Users.Entities;
 using HotelChain.Service.Validator.User;
 using Microsoft.AspNetCore.Mvc;
@@ -15,51 +16,14 @@ namespace HotelChain.Service.Controllers.Users;
 
 [ApiController]
 [Route("[controller]")]
-public class UsersController : ControllerBase
+public class UsersController(
+    IUsersManager usersManager,
+    IUsersProvider usersProvider,
+    IPermissionsProvider permissionsProvider,
+    IMapper mapper,
+    ILogger logger)
+    : ControllerBase
 {
-    private readonly IUsersManager _usersManager;
-    private readonly IUsersProvider _usersProvider;
-    private readonly IPermissionsProvider _permissionsProvider;
-    private readonly IMapper _mapper;
-    private readonly ILogger _logger;
-
-    public UsersController(IUsersManager usersManager, IUsersProvider usersProvider,
-        IPermissionsProvider permissionsProvider, IMapper mapper, ILogger logger)
-    {
-        _usersManager = usersManager;
-        _usersProvider = usersProvider;
-        _permissionsProvider = permissionsProvider;
-        _mapper = mapper;
-        _logger = logger;
-    }
-
-    [HttpPost]
-    [Route("register")]
-    public IActionResult RegisterUser([FromBody] RegisterUserRequest request)
-    {
-        var validationResult = new RegisterUserRequestValidator().Validate(request);
-        if (validationResult.IsValid)
-        {
-            try
-            {
-                var createUserModel = _mapper.Map<CreateUserModel>(request);
-                var userModel = _usersManager.CreateUser(createUserModel);
-                return Ok(new UsersListResponse
-                {
-                    Users = [userModel]
-                });
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e.ToString());
-                return BadRequest(e.Message);
-            }
-        }
-
-        _logger.Error(validationResult.ToString());
-        return BadRequest(validationResult.ToString());
-    }
-
     [HttpPost]
     [Route("update")]
     public IActionResult UpdateUserInfo([FromQuery] UpdateUserRequest request)
@@ -67,10 +31,10 @@ public class UsersController : ControllerBase
         var validationResult = new UpdateUserRequestValidator().Validate(request);
         if (validationResult.IsValid)
         {
-            var updateUserModel = _mapper.Map<UpdateUserModel>(request);
+            var updateUserModel = mapper.Map<UpdateUserModel>(request);
             try
             {
-                var userModel = _usersManager.UpdateUser(request.Id, updateUserModel);
+                var userModel = usersManager.UpdateUser(request.Id, updateUserModel);
                 return Ok(new UsersListResponse
                 {
                     Users = [userModel]
@@ -82,12 +46,12 @@ public class UsersController : ControllerBase
             }
             catch (Exception e)
             {
-                _logger.Error(e.ToString());
+                logger.Error(e.ToString());
                 return BadRequest("Что-то пошло не так, повторите позже)");
             }
         }
 
-        _logger.Error(validationResult.ToString());
+        logger.Error(validationResult.ToString());
         return BadRequest(validationResult.ToString());
     }
 
@@ -102,13 +66,13 @@ public class UsersController : ControllerBase
             {
                 var updateModel = new UpdateUsersPermissionsModel
                 {
-                    Permissions = _permissionsProvider.GetPermissions(new FilterPermissionModel
+                    Permissions = permissionsProvider.GetPermissions(new FilterPermissionModel
                     {
                         Types = request.Permissions
                     }).Select(x => x.Id).ToList()
                 };
-                
-                var userModel = _usersManager.UpdateUsersPermissions(request.Id, updateModel);
+
+                var userModel = usersManager.UpdateUsersPermissions(request.Id, updateModel);
                 return Ok(new UsersListResponse
                 {
                     Users = [userModel]
@@ -124,12 +88,12 @@ public class UsersController : ControllerBase
             }
             catch (Exception e)
             {
-                _logger.Error(e.ToString());
+                logger.Error(e.ToString());
                 return BadRequest("Что-то пошло не так, повторите позже)");
             }
         }
 
-        _logger.Error(validationResult.ToString());
+        logger.Error(validationResult.ToString());
         return BadRequest(validationResult.ToString());
     }
 
@@ -139,7 +103,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            _usersManager.DeleteUser(userIdToUnregister);
+            usersManager.DeleteUser(userIdToUnregister);
             return Ok("Пользователь был удален");
         }
         catch (UserNotFoundException e)
@@ -148,7 +112,7 @@ public class UsersController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.Error(e.ToString());
+            logger.Error(e.ToString());
             return BadRequest("Упс, что-то пошло не так. Повторите позже");
         }
     }
@@ -158,7 +122,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var users = _usersProvider.GetUsers();
+            var users = usersProvider.GetUsers();
             return Ok(new UsersListResponse
             {
                 Users = users.ToList()
@@ -166,7 +130,7 @@ public class UsersController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.Error(e.ToString());
+            logger.Error(e.ToString());
             return BadRequest("Что-то пошло не так. Повторите попытку позже.");
         }
     }
@@ -177,8 +141,8 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var userFilterModel = _mapper.Map<FilterUserModel>(filter);
-            var users = _usersProvider.GetUsers(userFilterModel);
+            var userFilterModel = mapper.Map<FilterUserModel>(filter);
+            var users = usersProvider.GetUsers(userFilterModel);
             return Ok(new UsersListResponse
             {
                 Users = users.ToList()
@@ -186,7 +150,7 @@ public class UsersController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.Error(e.ToString());
+            logger.Error(e.ToString());
             return BadRequest("Что-то пошло не так. Повторите попытку позже.");
         }
     }
@@ -197,7 +161,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var userModel = _usersProvider.GerUserInfo(id);
+            var userModel = usersProvider.GerUserInfo(id);
             return Ok(new UsersListResponse()
             {
                 Users = [userModel]
@@ -209,7 +173,7 @@ public class UsersController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.Error(e.ToString());
+            logger.Error(e.ToString());
             return BadRequest(e.Message);
         }
     }

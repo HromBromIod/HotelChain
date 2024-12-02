@@ -1,62 +1,35 @@
 ﻿using AutoMapper;
-using HotelChain.BL.Permissions.Exceptions;
+using HotelChain.BL.Exceptions.PermissionsExceptions;
+using HotelChain.BL.Exceptions.UsersExceptions;
 using HotelChain.BL.Users.Entity;
-using HotelChain.BL.Users.Exceptions;
 using HotelChain.DataAccess.Entities;
 using HotelChain.Repository.Repository;
 
 namespace HotelChain.BL.Users.Manager;
 
-public class UsersManager : IUsersManager
+public class UsersManager(
+    IRepository<UserEntity> usersRepository,
+    IRepository<PermissionEntity> permissionsRepository,
+    IMapper mapper)
+    : IUsersManager
 {
-    private readonly IRepository<UserEntity> _usersRepository;
-    private readonly IRepository<PermissionEntity> _permissionsRepository;
-    private readonly IMapper _mapper;
-
-    public UsersManager(IRepository<UserEntity> usersRepository, IRepository<PermissionEntity> permissionsRepository,
-        IMapper mapper)
-    {
-        _usersRepository = usersRepository;
-        _permissionsRepository = permissionsRepository;
-        _mapper = mapper;
-    }
-
-    public UserModel CreateUser(CreateUserModel createModel)
-    {
-        try
-        {
-            var entity = _mapper.Map<UserEntity>(createModel, opts: (x) =>
-            {
-                x.AfterMap((_, y) =>
-                {
-                    y.Permissions = [];
-                });
-            });
-            entity = _usersRepository.Save(entity);
-            return _mapper.Map<UserModel>(entity);
-        }
-        catch (Exception e)
-        {
-            throw new UserAlreadyExistsException("Пользователь с такими данными уже существует или введены некорректные данные");
-        }
-    }
 
     public void DeleteUser(int id)
     {
-        var entity = _usersRepository.GetById(id);
+        var entity = usersRepository.GetById(id);
         if (entity is null)
             throw new UserNotFoundException("Такого пользователя не существует");
 
-        _usersRepository.Delete(entity);
+        usersRepository.Delete(entity);
     }
 
     public UserModel UpdateUser(int id, UpdateUserModel updateModel)
     {
-        var entity = _usersRepository.GetById(id);
+        var entity = usersRepository.GetById(id);
         if (entity is null)
             throw new UserNotFoundException("Такого пользователя не существует");
 
-        entity = _mapper.Map<UpdateUserModel, UserEntity>(updateModel, opts => opts.AfterMap(
+        entity = mapper.Map<UpdateUserModel, UserEntity>(updateModel, opts => opts.AfterMap(
             (src, dest) =>
             {
                 dest.Id = entity.Id;
@@ -75,8 +48,8 @@ public class UsersManager : IUsersManager
             }));
         try
         {
-            entity = _usersRepository.Save(entity);
-            return _mapper.Map<UserModel>(entity);
+            entity = usersRepository.Save(entity);
+            return mapper.Map<UserModel>(entity);
         }
         catch (Exception e)
         {
@@ -86,14 +59,14 @@ public class UsersManager : IUsersManager
 
     public UserModel UpdateUsersPermissions(int id, UpdateUsersPermissionsModel updateModel)
     {
-        var entity = _usersRepository.GetById(id);
+        var entity = usersRepository.GetById(id);
         if (entity is null)
             throw new UserNotFoundException("Такого пользователя не существует");
         
         var permissions = new List<PermissionEntity>();
         foreach (var permissionId in updateModel.Permissions)
         {
-            var permissionEntity = _permissionsRepository.GetById(permissionId);
+            var permissionEntity = permissionsRepository.GetById(permissionId);
             if (permissionEntity is not null)
                 permissions.Add(permissionEntity);
         }
@@ -101,7 +74,7 @@ public class UsersManager : IUsersManager
             throw new PermissionNotFoundException("Таких прав доступа не существует");
 
         entity.Permissions = permissions;
-        entity = _usersRepository.Save(entity);
-        return _mapper.Map<UserModel>(entity);
+        entity = usersRepository.Save(entity);
+        return mapper.Map<UserModel>(entity);
     }
 }

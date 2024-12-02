@@ -8,7 +8,6 @@ public class UsersServiceProfile : Profile
 {
     public UsersServiceProfile()
     {
-        CreateMap<RegisterUserRequest, CreateUserModel>();
         CreateMap<UpdateUserRequest, UpdateUserModel>();
         CreateMap<UpdateUsersPermissionsRequest, UpdateUsersPermissionsModel>();
         CreateMap<UserFilter, FilterUserModel>();

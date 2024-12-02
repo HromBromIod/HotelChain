@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HotelChain.BL.Auth.Entities;
 using HotelChain.BL.Users.Entity;
 using HotelChain.DataAccess.Entities;
 
@@ -12,16 +13,6 @@ public class UsersBLProfile : Profile
             .ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
             .ForMember(x => x.Permissions, y => y.MapFrom(src =>
                 src.Permissions.Select(p => p.Type)));
-
-        CreateMap<CreateUserModel, UserEntity>()
-            .ForMember(x => x.Id, y => y.Ignore())
-            .ForMember(x => x.ExternalId, y => y.Ignore())
-            .ForMember(x => x.CreationTime, y => y.Ignore())
-            .ForMember(x => x.ModificationTime, y => y.Ignore())
-            .ForMember(x => x.FullName,
-                y => y.MapFrom(src =>
-                    src.Surname + " " + src.Name + (src.Patronymic == null ? string.Empty : " " + src.Patronymic)))
-            .ForMember(x => x.Permissions, y => y.Ignore());
 
         CreateMap<UpdateUserModel, UserEntity>()
             .ForMember(x => x.Id, y => y.Ignore())
@@ -46,6 +37,6 @@ public class UsersBLProfile : Profile
             .ForMember(x => x.BirthDate, y =>
                 y.PreCondition(src => src.BirthDate is not null));
 
-        CreateMap<CreateUserModel, FilterUserModel>();
+        CreateMap<RegisterUserModel, FilterUserModel>();
     }
 }
