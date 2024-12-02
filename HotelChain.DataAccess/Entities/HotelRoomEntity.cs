@@ -3,8 +3,13 @@
 namespace HotelChain.DataAccess.Entities;
 
 [Table("HotelRooms")]
-public class HotelRoomEntity : BaseEntity
+public class HotelRoomEntity : IBaseEntity
 {
+    public int Id { get; set; }
+    public Guid ExternalId { get; set; }
+    public DateTime CreationTime { get; set; }
+    public DateTime ModificationTime { get; set; }
+    
     public int BedsCount { get; set; }
     public DateTime BookingStartDate { get; set; }
     public DateTime BookingEndDate { get; set; }

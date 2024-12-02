@@ -9,6 +9,9 @@ public static class MapperConfigurator
     {
         services.AddAutoMapper(config =>
         {
+            config.AddProfile<AuthBLProfile>();
+            config.AddProfile<AuthServiceProfile>();
+            
             config.AddProfile<UsersBLProfile>();
             config.AddProfile<UsersServiceProfile>();
             

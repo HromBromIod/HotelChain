@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using HotelChain.Service.Controllers.Users.Entities;
+using HotelChain.Service.Controllers.Auth.Entities;
 
 namespace HotelChain.Service.Validator.User;
 
@@ -11,7 +11,7 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
             .NotEmpty()
             .Matches(@"[\w_]+")
             .WithMessage("UserName is required");
-        RuleFor(x => x.PasswordHash)
+        RuleFor(x => x.Password)
             .NotEmpty()
             .WithMessage("Password is required");
         RuleFor(x => x.PassportSeries)
