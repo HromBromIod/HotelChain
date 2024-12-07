@@ -7,4 +7,5 @@ public class HotelChainSettings
     public string ClientId { get; set; }
     public string ClientSecret { get; set; }
     public string ApiName { get; set; }
+    public (string UserName, string Password) MasterAdminData { get; set; }
 }

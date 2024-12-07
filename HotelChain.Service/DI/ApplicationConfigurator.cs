@@ -17,11 +17,12 @@ public static class ApplicationConfigurator
         builder.Services.AddControllers();
     }
 
-    public static void ConfigureApplication(WebApplication app)
+    public static async Task ConfigureApplication(WebApplication app, HotelChainSettings settings)
     {
         SerilogConfigurator.ConfigureApplication(app);
         DbContextConfigurator.ConfigureApplication(app);
         AuthorizationConfigurator.ConfigureApplication(app);
+        await RepositoryInitializer.ConfigureApplication(app, settings);
         SwaggerConfigurator.ConfigureApplication(app);
 
         app.MapControllers();

@@ -6,7 +6,6 @@ using HotelChain.BL.Permissions.Provider;
 using HotelChain.BL.Users.Entity;
 using HotelChain.BL.Users.Manager;
 using HotelChain.BL.Users.Provider;
-using HotelChain.Service.Controllers.Auth.Entities;
 using HotelChain.Service.Controllers.Users.Entities;
 using HotelChain.Service.Validator.User;
 using Microsoft.AspNetCore.Mvc;
