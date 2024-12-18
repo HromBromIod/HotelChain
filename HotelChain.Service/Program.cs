@@ -16,4 +16,4 @@ await ApplicationConfigurator.ConfigureApplication(app, settings);
 
 app.Run();
 
-public partial class Program { }
+public partial class Program;

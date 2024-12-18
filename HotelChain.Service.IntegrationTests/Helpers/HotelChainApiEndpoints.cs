@@ -1,4 +1,4 @@
-﻿namespace HotelChain.Service.UnitTests.Helpers;
+﻿namespace HotelChain.Service.IntegrationTests.Helpers;
 
 public static class HotelChainApiEndpoints
 {

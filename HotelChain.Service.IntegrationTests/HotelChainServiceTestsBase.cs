@@ -2,7 +2,7 @@
 using HotelChain.DataAccess;
 using HotelChain.DataAccess.Entities;
 using HotelChain.Repository;
-using HotelChain.Service.UnitTests.Helpers;
+using HotelChain.Service.IntegrationTests.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Moq;
 
-namespace HotelChain.Service.UnitTests;
+namespace HotelChain.Service.IntegrationTests;
 
 public class HotelChainServiceTestsBase
 {
@@ -69,7 +69,7 @@ public class HotelChainServiceTestsBase
         // });
     }
 
-    [OneTimeTearDownAttribute]
+    [OneTimeTearDown]
     public void OneTimeTearDown()
     {
         _testServer.Dispose();

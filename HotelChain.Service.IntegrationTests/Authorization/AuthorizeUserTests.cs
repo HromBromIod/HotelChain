@@ -3,16 +3,16 @@ using FluentAssertions;
 using HotelChain.BL.Auth;
 using HotelChain.BL.Auth.Entities;
 using HotelChain.BL.Users.Manager;
-using HotelChain.Service.UnitTests.Helpers;
+using HotelChain.Service.IntegrationTests.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
-namespace HotelChain.Service.UnitTests.Authorization;
+namespace HotelChain.Service.IntegrationTests.Authorization;
 
 public class AuthorizeUserTests : HotelChainServiceTestsBase
 {
     [Test]
-    public async Task HappyPath()
+    public async Task HappyPathTest()
     {
         var registerUserModel = new RegisterUserModel
         {

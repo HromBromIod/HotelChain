@@ -1,7 +1,7 @@
 ﻿using HotelChain.Service.Settings;
 using Microsoft.Extensions.Configuration;
 
-namespace HotelChain.Service.UnitTests.Helpers;
+namespace HotelChain.Service.IntegrationTests.Helpers;
 
 public class TestConfigurator
 {
