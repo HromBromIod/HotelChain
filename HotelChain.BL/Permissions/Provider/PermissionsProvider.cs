@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using HotelChain.BL.Permissions.Entity;
 using HotelChain.DataAccess.Entities;
-using HotelChain.Repository.Repository;
+using HotelChain.Repository;
 
 namespace HotelChain.BL.Permissions.Provider;
 

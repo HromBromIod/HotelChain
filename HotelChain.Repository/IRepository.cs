@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using HotelChain.DataAccess.Entities;
 
-namespace HotelChain.Repository.Repository;
+namespace HotelChain.Repository;
 
 public interface IRepository<T> where T : class, IBaseEntity
 {

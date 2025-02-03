@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using HotelChain.DataAccess;
 using HotelChain.DataAccess.Entities;
-using HotelChain.Repository.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelChain.Repository.Repositories;
