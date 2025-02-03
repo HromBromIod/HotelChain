@@ -1,18 +1,15 @@
 ﻿using HotelChain.DataAccess;
+using HotelChain.Service.Settings;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelChain.Service.IoC;
 
-public class DbContextConfigurator
+public static class DbContextConfigurator
 {
-    public static void ConfigureServices(WebApplicationBuilder builder)
+    public static void ConfigureServices(IServiceCollection services, HotelChainSettings settings)
     {
-        var configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: false)
-            .Build();
-        string connectionString = configuration.GetValue<string>("HotelChainDbContext");
-
-        builder.Services.AddDbContextFactory<HotelChainDbContext>(
+        var connectionString = settings.HotelChainDbContextConnectionString;
+        services.AddDbContextFactory<HotelChainDbContext>(
             options => { options.UseNpgsql(connectionString); },
             ServiceLifetime.Scoped);
     }
