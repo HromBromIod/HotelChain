@@ -1,5 +1,4 @@
 ﻿using HotelChain.DataAccess;
-using HotelChain.DataAccess.Entities;
 using HotelChain.Service.Settings;
 using Microsoft.EntityFrameworkCore;
 

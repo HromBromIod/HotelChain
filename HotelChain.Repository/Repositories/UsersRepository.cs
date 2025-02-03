@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 using HotelChain.DataAccess;
 using HotelChain.DataAccess.Entities;
-using HotelChain.Repository.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace HotelChain.Repository.Repositories;
 
@@ -15,55 +15,55 @@ public class UsersRepository : IRepository<UserEntity>
         _contextFactory = contextFactory;
     }
 
-    public IEnumerable<UserEntity> GetAll()
+    public async Task<IEnumerable<UserEntity>> GetAllAsync()
     {
-        using var dbContext = _contextFactory.CreateDbContext();
-        return dbContext.Set<UserEntity>().AsNoTracking().Include(e => e.Permissions).ToList();
+        await using var dbContext = await _contextFactory.CreateDbContextAsync();
+        return await dbContext.Set<UserEntity>().AsNoTracking().Include(e => e.Permissions).ToListAsync();
     }
 
-    public IEnumerable<UserEntity> GetAll(Expression<Func<UserEntity, bool>> predicate)
+    public async Task<IEnumerable<UserEntity>> GetAllAsync(Expression<Func<UserEntity, bool>> predicate)
     {
-        using var dbContext = _contextFactory.CreateDbContext();
-        return dbContext.Set<UserEntity>().AsNoTracking().Include(e => e.Permissions).Where(predicate).ToList();
+        await using var dbContext = await _contextFactory.CreateDbContextAsync();
+        return await dbContext.Set<UserEntity>().AsNoTracking().Include(e => e.Permissions).Where(predicate).ToListAsync();
     }
 
-    public UserEntity? GetById(int id)
+    public async Task<UserEntity?> GetByIdAsync(int id)
     {
-        using var dbContext = _contextFactory.CreateDbContext();
-        return dbContext.Set<UserEntity>().AsNoTracking().Include(e => e.Permissions).FirstOrDefault(e => e.Id == id);
+        await using var dbContext = await _contextFactory.CreateDbContextAsync();
+        return await dbContext.Set<UserEntity>().AsNoTracking().Include(e => e.Permissions).FirstOrDefaultAsync(e => e.Id == id);
     }
 
-    public UserEntity? GetById(Guid id)
+    public async Task<UserEntity?> GetByIdAsync(Guid id)
     {
-        using var dbContext = _contextFactory.CreateDbContext();
-        return dbContext.Set<UserEntity>().AsNoTracking().Include(e => e.Permissions).FirstOrDefault(e => e.ExternalId == id);
+        await using var dbContext = await _contextFactory.CreateDbContextAsync();
+        return await dbContext.Set<UserEntity>().AsNoTracking().Include(e => e.Permissions).FirstOrDefaultAsync(e => e.ExternalId == id);
     }
 
-    public UserEntity Save(UserEntity entity)
+    public async Task<UserEntity> SaveAsync(UserEntity entity)
     {
-        using var dbContext = _contextFactory.CreateDbContext();
-        if (dbContext.Set<UserEntity>().AsNoTracking().FirstOrDefault(e => e.Id == entity.Id) == null)
+        await using var dbContext = await _contextFactory.CreateDbContextAsync();
+        EntityEntry<UserEntity> result;
+        if (await dbContext.Set<UserEntity>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == entity.Id) == null)
         {
             entity.ExternalId = Guid.NewGuid();
             entity.CreationTime = DateTime.UtcNow;
             entity.ModificationTime = DateTime.UtcNow;
-            var result = dbContext.Set<UserEntity>().Add(entity);
-            dbContext.SaveChanges();
-            return result.Entity;
+            result = await dbContext.Set<UserEntity>().AddAsync(entity);
         }
         else
         {
             entity.ModificationTime = DateTime.UtcNow;
-            var result = dbContext.Set<UserEntity>().Update(entity);
-            dbContext.SaveChanges();
-            return result.Entity;
+            result = dbContext.Set<UserEntity>().Update(entity);
         }
+        await dbContext.SaveChangesAsync();
+        
+        return result.Entity;
     }
 
-    public void Delete(UserEntity entity)
+    public async Task DeleteAsync(UserEntity entity)
     {
-        using var dbContext = _contextFactory.CreateDbContext();
+        await using var dbContext = await _contextFactory.CreateDbContextAsync();
         dbContext.Set<UserEntity>().Remove(entity);
-        dbContext.SaveChanges();
+        await dbContext.SaveChangesAsync();
     }
 }

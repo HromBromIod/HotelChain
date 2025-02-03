@@ -4,6 +4,6 @@ namespace HotelChain.BL.Users.Provider;
 
 public interface IUsersProvider
 {
-    IEnumerable<UserModel> GetUsers(FilterUserModel filter = null);
-    UserModel GerUserInfo(int id);
+    Task<IEnumerable<UserModel>> GetUsersAsync(FilterUserModel filter = null);
+    Task<UserModel> GerUserInfoAsync(int id);
 }

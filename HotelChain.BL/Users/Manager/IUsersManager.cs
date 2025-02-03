@@ -1,11 +1,10 @@
-﻿using HotelChain.BL.Auth.Entities;
-using HotelChain.BL.Users.Entity;
+﻿using HotelChain.BL.Users.Entity;
 
 namespace HotelChain.BL.Users.Manager;
 
 public interface IUsersManager
 {
-    void DeleteUser(int id);
-    UserModel UpdateUser(int id, UpdateUserModel updateModel);
-    UserModel UpdateUsersPermissions(int id, UpdateUsersPermissionsModel updateModel);
+    Task DeleteUserAsync(int id);
+    Task<UserModel> UpdateUserAsync(int id, UpdateUserModel updateModel);
+    Task<UserModel> UpdateUsersPermissionsAsync(int id, UpdateUsersPermissionsModel updateModel);
 }

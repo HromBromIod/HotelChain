@@ -4,5 +4,5 @@ namespace HotelChain.BL.Permissions.Provider;
 
 public interface IPermissionsProvider
 {
-    IEnumerable<PermissionModel> GetPermissions(FilterPermissionModel filter = null);
+    Task<IEnumerable<PermissionModel>> GetPermissionsAsync(FilterPermissionModel filter = null);
 }

@@ -25,7 +25,7 @@ public class UsersController(
 {
     [HttpPost]
     [Route("update")]
-    public IActionResult UpdateUserInfo([FromQuery] UpdateUserRequest request)
+    public async Task<IActionResult> UpdateUserInfo([FromQuery] UpdateUserRequest request)
     {
         var validationResult = new UpdateUserRequestValidator().Validate(request);
         if (validationResult.IsValid)
@@ -33,7 +33,7 @@ public class UsersController(
             var updateUserModel = mapper.Map<UpdateUserModel>(request);
             try
             {
-                var userModel = usersManager.UpdateUser(request.Id, updateUserModel);
+                var userModel = await usersManager.UpdateUserAsync(request.Id, updateUserModel);
                 return Ok(new UsersListResponse
                 {
                     Users = [userModel]
@@ -56,22 +56,23 @@ public class UsersController(
 
     [HttpPost]
     [Route("permissions")]
-    public IActionResult UpdateUsersPermissions([FromBody] UpdateUsersPermissionsRequest request)
+    public async Task<IActionResult> UpdateUsersPermissions([FromBody] UpdateUsersPermissionsRequest request)
     {
         var validationResult = new UpdateUsersPermissionsRequestValidator().Validate(request);
         if (validationResult.IsValid)
         {
             try
             {
+                var permissions = await permissionsProvider.GetPermissionsAsync(new FilterPermissionModel
+                {
+                    Types = request.Permissions
+                });
                 var updateModel = new UpdateUsersPermissionsModel
                 {
-                    Permissions = permissionsProvider.GetPermissions(new FilterPermissionModel
-                    {
-                        Types = request.Permissions
-                    }).Select(x => x.Id).ToList()
+                    Permissions = permissions.Select(x => x.Id).ToList()
                 };
 
-                var userModel = usersManager.UpdateUsersPermissions(request.Id, updateModel);
+                var userModel = await usersManager.UpdateUsersPermissionsAsync(request.Id, updateModel);
                 return Ok(new UsersListResponse
                 {
                     Users = [userModel]
@@ -98,11 +99,11 @@ public class UsersController(
 
     [HttpDelete]
     [Route("unregister")]
-    public IActionResult UnregisterUser([FromQuery] int userIdToUnregister)
+    public  async Task<IActionResult> UnregisterUser([FromQuery] int userIdToUnregister)
     {
         try
         {
-            usersManager.DeleteUser(userIdToUnregister);
+            await usersManager.DeleteUserAsync(userIdToUnregister);
             return Ok("Пользователь был удален");
         }
         catch (UserNotFoundException e)
@@ -117,11 +118,11 @@ public class UsersController(
     }
 
     [HttpGet]
-    public IActionResult GetAllUsers()
+    public async Task<IActionResult> GetAllUsers()
     {
         try
         {
-            var users = usersProvider.GetUsers();
+            var users = await usersProvider.GetUsersAsync();
             return Ok(new UsersListResponse
             {
                 Users = users.ToList()
@@ -136,12 +137,12 @@ public class UsersController(
 
     [HttpGet]
     [Route("filter")]
-    public IActionResult GetFilteredUsers([FromQuery] UserFilter filter)
+    public async Task<IActionResult> GetFilteredUsers([FromQuery] UserFilter filter)
     {
         try
         {
             var userFilterModel = mapper.Map<FilterUserModel>(filter);
-            var users = usersProvider.GetUsers(userFilterModel);
+            var users = await usersProvider.GetUsersAsync(userFilterModel);
             return Ok(new UsersListResponse
             {
                 Users = users.ToList()
@@ -156,11 +157,11 @@ public class UsersController(
 
     [HttpGet]
     [Route("info")]
-    public IActionResult GetUserInfo([FromQuery] int id)
+    public async Task<IActionResult> GetUserInfo([FromQuery] int id)
     {
         try
         {
-            var userModel = usersProvider.GerUserInfo(id);
+            var userModel = await usersProvider.GerUserInfoAsync(id);
             return Ok(new UsersListResponse()
             {
                 Users = [userModel]
