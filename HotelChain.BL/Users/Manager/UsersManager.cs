@@ -3,7 +3,7 @@ using HotelChain.BL.Exceptions.PermissionsExceptions;
 using HotelChain.BL.Exceptions.UsersExceptions;
 using HotelChain.BL.Users.Entity;
 using HotelChain.DataAccess.Entities;
-using HotelChain.Repository.Repository;
+using HotelChain.Repository;
 
 namespace HotelChain.BL.Users.Manager;
 
@@ -14,18 +14,18 @@ public class UsersManager(
     : IUsersManager
 {
 
-    public void DeleteUser(int id)
+    public async Task DeleteUserAsync(int id)
     {
-        var entity = usersRepository.GetById(id);
+        var entity = await usersRepository.GetByIdAsync(id);
         if (entity is null)
             throw new UserNotFoundException("Такого пользователя не существует");
 
-        usersRepository.Delete(entity);
+        await usersRepository.DeleteAsync(entity);
     }
 
-    public UserModel UpdateUser(int id, UpdateUserModel updateModel)
+    public async Task<UserModel> UpdateUserAsync(int id, UpdateUserModel updateModel)
     {
-        var entity = usersRepository.GetById(id);
+        var entity = await usersRepository.GetByIdAsync(id);
         if (entity is null)
             throw new UserNotFoundException("Такого пользователя не существует");
 
@@ -48,7 +48,7 @@ public class UsersManager(
             }));
         try
         {
-            entity = usersRepository.Save(entity);
+            entity = await usersRepository.SaveAsync(entity);
             return mapper.Map<UserModel>(entity);
         }
         catch (Exception e)
@@ -57,16 +57,16 @@ public class UsersManager(
         }
     }
 
-    public UserModel UpdateUsersPermissions(int id, UpdateUsersPermissionsModel updateModel)
+    public async Task<UserModel> UpdateUsersPermissionsAsync(int id, UpdateUsersPermissionsModel updateModel)
     {
-        var entity = usersRepository.GetById(id);
+        var entity = await usersRepository.GetByIdAsync(id);
         if (entity is null)
             throw new UserNotFoundException("Такого пользователя не существует");
         
         var permissions = new List<PermissionEntity>();
         foreach (var permissionId in updateModel.Permissions)
         {
-            var permissionEntity = permissionsRepository.GetById(permissionId);
+            var permissionEntity = await permissionsRepository.GetByIdAsync(permissionId);
             if (permissionEntity is not null)
                 permissions.Add(permissionEntity);
         }
@@ -74,7 +74,7 @@ public class UsersManager(
             throw new PermissionNotFoundException("Таких прав доступа не существует");
 
         entity.Permissions = permissions;
-        entity = usersRepository.Save(entity);
+        entity = await usersRepository.SaveAsync(entity);
         return mapper.Map<UserModel>(entity);
     }
 }

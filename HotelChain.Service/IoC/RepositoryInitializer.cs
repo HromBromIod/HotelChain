@@ -102,7 +102,7 @@ public static class RepositoryInitializer
 
     private static void GrantPermissions(IUsersManager usersManager, int id, List<PermissionEntity> permissions)
     {
-        usersManager.UpdateUsersPermissions(id, new UpdateUsersPermissionsModel
+        usersManager.UpdateUsersPermissionsAsync(id, new UpdateUsersPermissionsModel
         {
             Permissions = permissions.Select(x => x.Id).ToList()
         });
@@ -117,7 +117,7 @@ public static class RepositoryInitializer
         var permissions = await InitializePermissions(dbContextFactory);
 
         var usersProvider = (IUsersProvider)scope.ServiceProvider.GetRequiredService(typeof(IUsersProvider));
-        if (!usersProvider.GetUsers(new FilterUserModel { Login = settings.MasterAdminData.UserName }).Any())
+        if (!(await usersProvider.GetUsersAsync(new FilterUserModel { Login = settings.MasterAdminData.UserName })).Any())
         {
             var authProvider = (IAuthProvider)scope.ServiceProvider.GetRequiredService(typeof(IAuthProvider));
             var adminModel = await CreateGlobalAdmin(authProvider, settings.MasterAdminData.UserName,

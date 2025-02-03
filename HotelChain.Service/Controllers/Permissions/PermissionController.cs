@@ -16,12 +16,12 @@ public class PermissionController(
     : ControllerBase
 {
     [HttpGet]
-    public IActionResult GetAllPermissions()
+    public async Task<IActionResult> GetAllPermissions()
     {
         try
         {
-            var permissions = permissionsProvider.GetPermissions();
-            return Ok(new PermissionListResponse()
+            var permissions = await permissionsProvider.GetPermissionsAsync();
+            return Ok(new PermissionListResponse
             {
                 Permissions = permissions.ToList()
             });
@@ -35,13 +35,13 @@ public class PermissionController(
     
     [HttpGet]
     [Route("filter")]
-    public IActionResult GetFilteredPermissions([FromQuery] FilterPermission filter)
+    public async Task<IActionResult> GetFilteredPermissions([FromQuery] FilterPermission filter)
     {
         try
         {
             var filterModel = mapper.Map<FilterPermissionModel>(filter);
-            var permissions = permissionsProvider.GetPermissions(filterModel);
-            return Ok(new PermissionListResponse()
+            var permissions = await permissionsProvider.GetPermissionsAsync(filterModel);
+            return Ok(new PermissionListResponse
             {
                 Permissions = permissions.ToList()
             });
