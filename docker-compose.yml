@@ -1,0 +1,34 @@
+networks:
+  hotel-chain-db-network:
+    driver: bridge
+
+services:
+  hotel-chain:
+    container_name: hotel-chain
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4114:4114"
+    networks:
+      - hotel-chain-db-network
+    depends_on:
+      - hotel-chain-db
+    
+  hotel-chain-db:
+    container_name: hotel-chain-db
+    image: postgres:17.0-alpine3.20
+    environment:
+      POSTGRES_DB: "hotel_chain"
+      POSTGRES_USER: "hotel_chain"
+      POSTGRES_PASSWORD: "hotel_chain"
+      PGDATA: "/var/lib/postgresql/data/hotel-chain-db-data"
+    ports:
+      - "4115:5432"
+    networks:
+      - hotel-chain-db-network
+    volumes:
+      - hotel-chain-db-data:/var/lib/postgresql/data
+        
+volumes:
+  hotel-chain-db-data:

@@ -19,6 +19,7 @@ public static class DbContextConfigurator
         using var scope = app.ApplicationServices.CreateScope();
         var contextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<HotelChainDbContext>>();
         using var context = contextFactory.CreateDbContext();
-        context.Database.Migrate();
+
+        context.Database.EnsureCreated();
     }
 }
